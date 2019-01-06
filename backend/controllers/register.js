@@ -1,12 +1,18 @@
 
 const handleRegister = (req, res,db, bcrypt) => {
-  const {email, name, password, address, DOB} = req.body;
+  const {email, name, password, address, dob} = req.body;
   if (!email || !name || !password) {
     return res.status(400).json('Incorrect form submission.')
   }
   if (email.includes("@") && email.includes(".")) {
     const hash = bcrypt.hashSync(password);
-    console.log(address);
+    calcAge = (dob) => {
+      const getAge = birthDate => Math.floor((new Date() - new Date(birthDate).getTime()) / 3.15576e+10)
+      var newDob = dob.split("-").reverse().join("-");
+      var age = getAge(newDob)
+      return age;
+    }
+      var Age = calcAge(dob);
       db.transaction(trx => {
         trx.insert({
           hash: hash,
@@ -22,7 +28,8 @@ const handleRegister = (req, res,db, bcrypt) => {
               name: name,
               joined: new Date(),
               address: address,
-              dob: DOB
+              dob: dob,
+              age: Age
             })
             .then(user => {
               res.json(user[0]);

@@ -11,6 +11,8 @@ class Register extends Component {
         Email: '',
         Password: '',
         Name: '',
+        Address: '',
+        Dob: new Date(),
         selectedDay: undefined
       };
       this.handleDayChange = this.handleDayChange.bind(this);
@@ -32,12 +34,8 @@ class Register extends Component {
       this.setState({Password: event.target.value})
     }
 
-    onDOBChange = (event) => {
-      this.setState({Password: event.target.value})
-    }
-
     onAddressChange = (event) => {
-      this.setState({Password: event.target.value})
+      this.setState({Address: event.target.value})
     }
 
     onSubmitSignIn = () => {
@@ -52,7 +50,7 @@ class Register extends Component {
               password: this.state.Password,
               name: this.state.Name,
               address: this.state.Address,
-              DOB: this.state.DOB
+              dob: this.state.selectedDay
             })
           })
           .then(response => response.json())
@@ -100,8 +98,8 @@ class Register extends Component {
                 <label className="db fw6 lh-copy f6" htmlFor="email-address">Address</label>
                 <input className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
                   type="text"
-                  name="Address"
-                  id="Address"
+                  name="address"
+                  id="address"
                   onChange={this.onAddressChange}
                   />
               </div>
@@ -115,9 +113,9 @@ class Register extends Component {
                 />
               </div>
               <div>
-                {selectedDay && <p>Your birthdate: {selectedDay.toLocaleDateString()}</p>}
+                {selectedDay && <p>Your birthdate:</p>}
                 {!selectedDay && <p>Enter your birthdate</p>}
-                <DayPickerInput formatDate={formatDate} parseDate={parseDate} placeholder={`${formatDate(new Date())}`} onChange={this.onDOBChange}/>
+                <DayPickerInput formatDate={formatDate} parseDate={parseDate} placeholder={`${formatDate(new Date())}`} format="DD-MM-YYYY" onDayChange={this.handleDayChange} value={selectedDay}/>
               </div>
             </fieldset>
             <div className="">
