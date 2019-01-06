@@ -25,7 +25,7 @@ class Profile extends React.Component {
               {'User ID:'} {id}
           </div>
           <div style={{display: 'flex', justifyContent: 'flex-start'}}>
-              {'Name:'} <input type="text" value={id} disabled={!this.state.editModeEnabled}/>
+              {'Name:'} <input type="text" value={name} disabled={!this.state.editModeEnabled}/>
               <button onClick={this.handleEditClick.bind(this)}>Edit</button>
           </div>
           <div style={{display: 'flex', justifyContent: 'flex-start'}}>

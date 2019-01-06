@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import 'tachyons';
-/*import './Signin.css';*/
+import DayPickerInput from 'react-day-picker/DayPickerInput';
+import 'react-day-picker/lib/style.css';
+import {formatDate,parseDate} from 'react-day-picker/moment';
 
 class Register extends Component {
     constructor(props) {
@@ -8,8 +10,14 @@ class Register extends Component {
       this.state = {
         Email: '',
         Password: '',
-        Name: ''
-      }
+        Name: '',
+        selectedDay: undefined
+      };
+      this.handleDayChange = this.handleDayChange.bind(this);
+    }
+
+    handleDayChange(day) {
+    this.setState({ selectedDay: day });
     }
 
     onNameChange = (event) => {
@@ -24,6 +32,14 @@ class Register extends Component {
       this.setState({Password: event.target.value})
     }
 
+    onDOBChange = (event) => {
+      this.setState({Password: event.target.value})
+    }
+
+    onAddressChange = (event) => {
+      this.setState({Password: event.target.value})
+    }
+
     onSubmitSignIn = () => {
       if (this.state.Name === "" || this.state.Email === "" || this.state.Password === "") {
         alert('Field(s) cannot be empty!')
@@ -34,7 +50,9 @@ class Register extends Component {
             body: JSON.stringify({
               email: this.state.Email,
               password: this.state.Password,
-              name: this.state.Name
+              name: this.state.Name,
+              address: this.state.Address,
+              DOB: this.state.DOB
             })
           })
           .then(response => response.json())
@@ -49,8 +67,11 @@ class Register extends Component {
           }
       }
 
+
+
   render() {
     const {onRouteChange} = this.props;
+    const { selectedDay } = this.state;
     return (
       <article className="br3 ba dark-gray b--black-10 mv4 w-100 w-50-m w-25-l mw7 shadow-5 center bg">
         <main className="pa4 black-80">
@@ -75,6 +96,15 @@ class Register extends Component {
                 onChange={this.onEmailChange}
                 />
               </div>
+              <div className="mt3">
+                <label className="db fw6 lh-copy f6" htmlFor="email-address">Address</label>
+                <input className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
+                  type="text"
+                  name="Address"
+                  id="Address"
+                  onChange={this.onAddressChange}
+                  />
+              </div>
               <div className="mv3">
                 <label className="db fw6 lh-copy f6" htmlFor="password">Password</label>
                 <input className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
@@ -84,9 +114,14 @@ class Register extends Component {
                 onChange={this.onPasswordChange}
                 />
               </div>
+              <div>
+                {selectedDay && <p>Your birthdate: {selectedDay.toLocaleDateString()}</p>}
+                {!selectedDay && <p>Enter your birthdate</p>}
+                <DayPickerInput formatDate={formatDate} parseDate={parseDate} placeholder={`${formatDate(new Date())}`} onChange={this.onDOBChange}/>
+              </div>
             </fieldset>
             <div className="">
-              <input className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib br2"
+              <input className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib br2 mt3"
                 onClick={this.onSubmitSignIn}
                 type="submit"
                 value="Register" />
